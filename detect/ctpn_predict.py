@@ -87,27 +87,41 @@ def get_det_boxes(image,display = True, expand = True):
         # print(text)
         if display:
             blank = np.zeros(image_c.shape,dtype=np.uint8)
+            print("#画像の面積")
+            image_pixels = image_c.shape[0] * image_c.shape[1]
+            print(image_pixels)
             for box in select_anchor:
                 pt1 = (box[0], box[1])
                 pt2 = (box[2], box[3])
                 blank = cv2.rectangle(blank, pt1, pt2, (50, 0, 0), -1)
             image_c = image_c+blank
             image_c[image_c>255] = 255
+            charbox_pixels = 0
             for i in text:
-                s = str(round(i[-1] * 100, 2)) + '%'
-                i = [int(j) for j in i]
+                s = str(round(i[-1] * 100, 2)) + '%' # 文字とどれくらいマッチしてるか?
+                i = [int(j) for j in i] # 文字の範囲の座標
+                # line(画像, 座標1, 座標2, 色, 太さ)
+                # print("テキストを判定されたエリアの座標")
+                # [53, 337, 329, 338, 52, 367, 329, 369, 0] みたいな出力
                 cv2.line(image_c, (i[0], i[1]), (i[2], i[3]), (0, 0, 255), 2)
                 cv2.line(image_c, (i[0], i[1]), (i[4], i[5]), (0, 0, 255), 2)
                 cv2.line(image_c, (i[6], i[7]), (i[2], i[3]), (0, 0, 255), 2)
                 cv2.line(image_c, (i[4], i[5]), (i[6], i[7]), (0, 0, 255), 2)
-                cv2.putText(image_c, s, (i[0]+13, i[1]+13),
-                            cv2.FONT_HERSHEY_SIMPLEX,
-                            1,
-                            (255,0,0),
-                            2,
-                            cv2.LINE_AA)
+                charbox_pixels += (i[2] - i[0]) * (i[7] - i[3])
+                # cv2.putText(image_c, s, (i[0]+13, i[1]+13),
+                #             cv2.FONT_HERSHEY_SIMPLEX,
+                #             1,
+                #             (255,0,0),
+                #             2,
+                #             cv2.LINE_AA)
+            print("#文字が表示されてると判定された面積")
+            print(charbox_pixels)
+            print("#文字が画像を占める割合")
+            print("{:%}".format(charbox_pixels / image_pixels))
+            print("総ピクセル数: {0}, 文字と判定されたピクセル数: {1}, 割合: {2:%}".format(image_pixels, charbox_pixels, charbox_pixels / image_pixels))
             # dis(image_c)
         # print(text)
+        # print(image_c.shape)
         return text,image_c,image_r
 
 if __name__ == '__main__':
