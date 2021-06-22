@@ -117,12 +117,13 @@ def get_det_boxes(image,display = True, expand = True):
             print("#文字が表示されてると判定された面積")
             print(charbox_pixels)
             print("#文字が画像を占める割合")
-            print("{:%}".format(charbox_pixels / image_pixels))
-            print("総ピクセル数: {0}, 文字と判定されたピクセル数: {1}, 割合: {2:%}".format(image_pixels, charbox_pixels, charbox_pixels / image_pixels))
+            image_char_rate = charbox_pixels / image_pixels
+            print("{:%}".format(image_char_rate))
+            print("総ピクセル数: {0}, 文字と判定されたピクセル数: {1}, 割合: {2:%}".format(image_pixels, charbox_pixels, image_char_rate))
             # dis(image_c)
         # print(text)
         # print(image_c.shape)
-        return text,image_c,image_r
+        return text, image_c, image_r, image_char_rate
 
 if __name__ == '__main__':
     img_path = 'images/t1.png'

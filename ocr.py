@@ -72,7 +72,7 @@ def charRec(img, text_recs, adjust=False):
 
 def ocr(image):
     # detect
-    text_recs, img_framed, image = get_det_boxes(image)
+    text_recs, img_framed, image, image_char_rate = get_det_boxes(image)
     text_recs = sort_box(text_recs)
     result = charRec(image, text_recs)
-    return result, img_framed
+    return result, img_framed, image_char_rate
