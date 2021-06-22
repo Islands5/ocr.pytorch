@@ -38,5 +38,5 @@ if __name__ == '__main__':
             print(result[key][1])
             txt_f.write(result[key][1]+'\n')
         txt_f.close()
-        csv_f.write(file_name + ',' + image_char_rate + '\n')
+        csv_f.write("{0}, {1:%}\n".format(file_name, image_char_rate))
     csv_f.close()
